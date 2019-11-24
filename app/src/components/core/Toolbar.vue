@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app flat>
     <v-toolbar flat>
-      <v-toolbar-title>Home</v-toolbar-title>
+      <v-toolbar-title @click="goToHome">Home</v-toolbar-title>
 
       <v-spacer></v-spacer>
 

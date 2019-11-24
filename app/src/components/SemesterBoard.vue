@@ -66,17 +66,11 @@
         components: {
             SelectChip: () => import('@/components/chips/SelectChip')
         },
-        beforeMount() {
-          this.readData();
-        },
         data: () => ({
             text: "temp",
             cardColor: "undefined"
         }),
         methods: {
-            readData : function() {
-              this.$store.dispatch("getQuestions");
-            },
             leaveDrag: function() {
                 this.$emit('drag-leave-semester')
                 this.cardColor = "undefined"

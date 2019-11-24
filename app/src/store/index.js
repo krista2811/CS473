@@ -134,6 +134,9 @@ export default new Vuex.Store({
       const new_key = length + ""
       state.my_questions[new_key] = (payload.question)
     },
+    questionChange: function (state, payload) {
+      state.questions = payload;
+    },
     fillFitList(state, payload) {
       let temp = []
       for (var i = 0, len = payload.length; i < len; i++) {
@@ -155,7 +158,18 @@ export default new Vuex.Store({
             });
           });
       }
-
+    },
+    dbDataRead(state) {
+      db.collection('questions').get().then(snapshot => {
+        let count = 1;
+        snapshot.forEach(doc => {
+          if (doc.data().semesters) {
+            let question = doc.data();
+            state.questions[count] = question;
+            count ++;
+          }
+        })
+      })
     },
     changeLoginState(state, payload) {
       state.isLoggedIn = payload
@@ -165,15 +179,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    getQuestions: () => {
-      db.collection('questions').onSnapshot((data) => {
-        data.forEach(doc => {
-          console.log(doc.data());
-        })
-      }, (errorObject) => {
-        console.log(errorObject);
-      });
-    },
     goToAnswer (state, payload) {
       router.push({name: 'answer', params: {questionId: payload.questionId}});
     },
@@ -189,6 +194,12 @@ export default new Vuex.Store({
 
     gainReputationPts(context, payload) {
       context.commit('increaseReputationPts', payload)
+    },
+    changeQuestion(context, payload) {
+      context.commit('questionChange', payload);
+    },
+    dbRead (context) {
+      context.commit('dbDataRead');
     },
     getSearchData(context, payload) {
       let currentSemester = payload[0]

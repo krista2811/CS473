@@ -20,7 +20,7 @@
                     :index="course"
                     :courseId="index"
                     v-on:drag-on="getDrag"
-                    v-on:drag-end="addSemesterChip"/>
+                    v-on:drag-end="leaveSemesterDrag"/>
             </v-row>
 
     </v-col>
@@ -31,7 +31,6 @@
     } from 'vuex'
     import { db } from "../main"
     import store from '../store'
-
 
     export default {
         name: "DragBoard",
@@ -48,9 +47,12 @@
             semesters () {
                 return this.$store.state.questions[this.questionId].semesters
             },
-            courses() {
-                return this.$store.state.questions[this.questionId].courses               
-            } 
+            courses () {
+                return this.$store.state.questions[this.questionId].courses
+            } ,
+            questions() {
+              return this.$store.state.questions;
+            }
         },
         data: () => ({
             nullInfo: {
@@ -60,7 +62,7 @@
             },
             currentId: -1,
             currentSemesterId: -1,
-            onDrag: false
+            onDrag: false,
         }),
         methods: {
             getDrag: function (courseId) {
@@ -75,8 +77,8 @@
             },
             addSemesterChip: function(semesterId) {
                 if (this.currentId >= 0) {
-                    const itemId = this.courses[this.currentId]
-                    
+                    const itemId = this.courses[this.currentId];
+                    console.log(this.semesters[semesterId].courses);
                     var index = this.semesters[semesterId].courses.findIndex(x => x.index === itemId);
                     if (index >= 0) {
                         this.semesters[semesterId].courses[index].votes.up += 1
@@ -95,10 +97,11 @@
                         this.semesters[semesterId].courses.push(item);
                         store.commit('increaseReputationPts', 1)
                     }
-                    this.courses.splice(this.currentId, 1)
+                    this.courses.splice(this.currentId, 1);
                     this.currentId = -1
                     this.currentSemesterId = -1
                 }
+                db.collection('questions').doc(this.questionId).update(this.$store.state.questions[this.questionId]);
                 this.onDrag = false
             },
             deselectChip: function(semesterId, courseId) {
@@ -109,8 +112,8 @@
                 } else {
                     this.semesters[semesterId].courses.splice(courseId, 1)
                 }
-                
-                this.courses.push(targetCourse.index)
+                this.courses.push(targetCourse.index);
+                db.collection('questions').doc(this.questionId).update(this.$store.state.questions[this.questionId]);
             },
             vote: function(semesterId, courseId, voteState, prevVote) {
               if (voteState === 'down') {
@@ -128,6 +131,7 @@
               } else if (prevVote === 'hmm') {
                 this.semesters[semesterId].courses[courseId].votes.hmm -= 1
               }
+              db.collection('questions').doc(this.questionId).update(this.$store.state.questions[this.questionId]);
             },
     reputationUpdate: function(questionID, code, year, isSpring) {
       db.collection("votes")

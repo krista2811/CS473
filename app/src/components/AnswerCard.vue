@@ -45,7 +45,7 @@
 
     }),
     props: {
-      questionId: String
+      questionId: Number
     },
     computed: {
       ...mapState(['majorTags', 'users', 'questions']),

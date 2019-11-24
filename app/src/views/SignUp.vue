@@ -168,7 +168,7 @@ export default {
       }
 
       if (this.interestedArea == "None") {
-        this.interestedArea = "";
+        this.interestedArea = [];
       }
 
       firebase
@@ -181,7 +181,7 @@ export default {
               major: this.major,
               minor: this.minor,
               doubleMajor: this.doubleMajor,
-              interestedArea: this.interestedArea,
+              interestedArea: [this.interestedArea],
               reputationPts: 0,
               userID: firebase.auth().currentUser.uid
             };

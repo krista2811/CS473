@@ -13,11 +13,11 @@
     export default {
         name: 'Answer',
         props: {
-          questionId: String
+          questionId: Number
         },
         components: {
             AnswerBoard: () => import('@/components/DragBoard'),
             AnswerCard: () => import('@/components/AnswerCard')
-        }
+        },
     }
 </script>
