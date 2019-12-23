@@ -34,6 +34,7 @@ We advertised DraCS on Campuswire and personal connections. We gathered 56 users
 We made five hypotheses on how users would act and tried to identify them. Although we did not get enough data to identify all five hypotheses in a statistically meaningful way, we at least found some tendencies.
 
 The followings are our five hypotheses and our corresponding findings.
+
 H1. The fewer semesters one has taken, the more searches are made.
 > We did not find any meaningful correlation between the two.
 
